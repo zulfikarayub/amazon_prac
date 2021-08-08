@@ -21,7 +21,7 @@ import static io.restassured.RestAssured.given;
 public class amazonPage_Validations extends BaseTest {
 
     int searchCount;
-    String staffName, serviceTypeName, serviceDuration, servicePrice,prodPrice;
+    String prodPrice;
 
 
     @FindBy(id = "twotabsearchtextbox")
@@ -71,13 +71,6 @@ public class amazonPage_Validations extends BaseTest {
 
     @FindBy(xpath = "//div[@id='help_srch_sggst']/div")
     List<WebElement> searchSuggestion;
-
-    @FindBy(xpath = "//div[@class='appointment-preview-wrapper']//div[@class='Select-value']/span")
-    WebElement selectedStaffName;
-
-
-//    RequestSpecification RequestSpecification;
-//    ResponseSpecification ResponseSpecification;
     Response response;
 
     public amazonPage_Validations(String strURL) {
@@ -237,7 +230,7 @@ public class amazonPage_Validations extends BaseTest {
 
         try {
             System.out.println(url);
-
+// the API is not working as expected , but for the below the code has been written
 //
 //            RestAssured.baseURI = url;
 //            response = given()
