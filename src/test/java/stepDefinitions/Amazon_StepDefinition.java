@@ -83,4 +83,26 @@ public class Amazon_StepDefinition extends BaseTest {
     public void following_elements_should_be_displayed_getting_started_wi_fi_and_bluetooth_device_software_and_hardware_trouble_shooting() {
         System.out.println("These element are not present in any of the pages of the search Result..");
     }
+
+
+    @Given("User login the hexatech page")
+    public void user_login_the_hexatech_page() {
+        fb.validateHOmePage();
+    }
+
+    @Given("Click en el menú superior derecho search. Un campo de búsqueda se mostrará en pantalla")
+    public void click_en_el_menú_superior_derecho_search_un_campo_de_búsqueda_se_mostrará_en_pantalla() {
+        fb.searchTextClick();
+    }
+
+
+    @Given("Tipear el texto {string}. Un conjunto de resultados de búsqueda se mostrarán en pantalla.")
+    public void tipear_el_texto_un_conjunto_de_resultados_de_búsqueda_se_mostrarán_en_pantalla(String string) {
+        fb.enterSerchText(string);
+    }
+
+    @Then("Ver que en alguno de los resultados se encuentre el texto {string}")
+    public void ver_que_en_alguno_de_los_resultados_se_encuentre_el_texto(String string) {
+        fb.validateRstText(string);
+    }
 }

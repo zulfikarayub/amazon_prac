@@ -1,22 +1,16 @@
 package Cucumber.CucumberAutomation;
 
 
-import io.restassured.http.ContentType;
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
-import io.restassured.specification.ResponseSpecification;
-import io.restassured.RestAssured;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
-
-import static io.restassured.RestAssured.given;
 
 public class amazonPage_Validations extends BaseTest {
 
@@ -71,6 +65,20 @@ public class amazonPage_Validations extends BaseTest {
 
     @FindBy(xpath = "//div[@id='help_srch_sggst']/div")
     List<WebElement> searchSuggestion;
+
+
+    // hexa object
+
+    @FindBy(xpath = "//a[@class='searchbox']/span")
+    WebElement searchText;
+
+    @FindBy(id = "search-field")
+    WebElement searchInputField;
+
+    @FindBy(xpath = "//section[@id='search-results']//div[@class='entry-inner']/header//a")
+    List<WebElement> listResult;
+
+
     Response response;
 
     public amazonPage_Validations(String strURL) {
@@ -85,7 +93,53 @@ public class amazonPage_Validations extends BaseTest {
 
             pageTitle = driver.getTitle();
             System.out.println(pageTitle);
-            Assert.assertEquals(expectedPgTitle, pageTitle);
+            // Assert.assertEquals(expectedPgTitle, pageTitle);
+
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            Assert.fail(e.getMessage());
+        }
+    }
+
+    public void searchTextClick() {
+        String pageTitle, expectedPgTitle = "Amazon.com. Spend less. Smile more.";
+        try {
+            searchText.click();
+            System.out.println("search text field is clicked");
+
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            Assert.fail(e.getMessage());
+        }
+    }
+
+    public void enterSerchText(String text) {
+
+        try {
+            searchInputField.isDisplayed();
+            System.out.println("search text box field is displayed");
+            searchInputField.sendKeys(text, Keys.RETURN);
+            System.out.println("entered text " + text + "and hit the enter button");
+
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            Assert.fail(e.getMessage());
+        }
+    }
+
+    public void validateRstText(String exptext) {
+        String textfromScr;
+
+        try {
+            searchCount = listResult.size();
+            for (int i = 0; i < searchCount; i++) {
+                textfromScr = listResult.get(i).getText().trim();
+                if (textfromScr.contains(exptext)) {
+                    System.out.println("the text has been found..");
+                }
+            }
+            System.out.println("the following text has been not found ..");
+            Assert.fail();
 
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -98,7 +152,7 @@ public class amazonPage_Validations extends BaseTest {
         try {
             searchBar.clear();
             searchBar.sendKeys(nameProduct);
-            System.out.println("searching the product "+nameProduct);
+            System.out.println("searching the product " + nameProduct);
             searchBarIcon.click();
 
         } catch (Exception e) {
@@ -115,10 +169,10 @@ public class amazonPage_Validations extends BaseTest {
             searchCount = searchResult.size();
             if (searchCount >= expCount) {
                 System.out.println("more or equal to " + expCount + " result has been displayed");
-                searchList =searchResult.get(0);
+                searchList = searchResult.get(0);
                 prodPrice = searchList.findElement(By.xpath("//span[@class='a-price']")).getText().trim();
                 prodPrice = prodPrice.replaceAll("\n", ".");
-                System.out.println("The first product price is.."+prodPrice);
+                System.out.println("The first product price is.." + prodPrice);
 
             } else {
                 System.out.println("less than " + expCount + " result has been displayed");
@@ -136,7 +190,7 @@ public class amazonPage_Validations extends BaseTest {
     public void productClick() {
         WebElement searchList;
         try {
-            searchList =searchResult.get(0);
+            searchList = searchResult.get(0);
             searchList.findElement(By.xpath("//span[contains(@class,'a-text-normal')]")).click();
             System.out.println("clicking the first product.");
 
@@ -152,9 +206,9 @@ public class amazonPage_Validations extends BaseTest {
 
         try {
             detailPrice = detailProdPrice.getText();
-            System.out.println("The product price in detail Page is..."+detailPrice);
-            System.out.println("the price from Search result is .."+prodPrice);
-            Assert.assertEquals(detailPrice,prodPrice);
+            System.out.println("The product price in detail Page is..." + detailPrice);
+            System.out.println("the price from Search result is .." + prodPrice);
+            Assert.assertEquals(detailPrice, prodPrice);
             addCartButton.click();
             System.out.println("The product is added to cart.");
 
@@ -184,8 +238,8 @@ public class amazonPage_Validations extends BaseTest {
 
         try {
             cartPrice = cartPgPrice.getText();
-            System.out.println("The product price in cart Page is..."+cartPrice);
-            Assert.assertEquals(cartPrice,prodPrice);
+            System.out.println("The product price in cart Page is..." + cartPrice);
+            Assert.assertEquals(cartPrice, prodPrice);
 
 
         } catch (Exception e) {
@@ -200,7 +254,7 @@ public class amazonPage_Validations extends BaseTest {
         try {
             cartPgDeleteOption.click();
             System.out.println("The product price in cart Page is deleted..");
-            Assert.assertTrue("Cart is not empty",cartEmptyMsg.isDisplayed());
+            Assert.assertTrue("Cart is not empty", cartEmptyMsg.isDisplayed());
 
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -224,7 +278,7 @@ public class amazonPage_Validations extends BaseTest {
 
     }
 
-    public void apiDataResponse(String url,String email) {
+    public void apiDataResponse(String url, String email) {
         String messdage = null;
 
 
@@ -248,7 +302,6 @@ public class amazonPage_Validations extends BaseTest {
             userEmail.sendKeys(email);
 
 
-
         } catch (Exception e) {
             System.err.println(e.getMessage());
             Assert.fail(e.getMessage());
@@ -257,21 +310,20 @@ public class amazonPage_Validations extends BaseTest {
     }
 
 
-
-    public void clickCondition(String keyword,String keyWordToSelect) {
+    public void clickCondition(String keyword, String keyWordToSelect) {
         int count;
         String value;
         try {
             conditionOfUseHyperLink.click();
             con_useSearchBox.click();
-            con_useSearchBox.sendKeys(keyword+" ");
+            con_useSearchBox.sendKeys(keyword + " ");
             System.out.println("Clicking on Condition");
             count = searchSuggestion.size();
-            for(WebElement DropDowGetText : searchSuggestion){
+            for (WebElement DropDowGetText : searchSuggestion) {
                 value = DropDowGetText.getText();
-                if (value.equalsIgnoreCase(keyWordToSelect)){
+                if (value.equalsIgnoreCase(keyWordToSelect)) {
                     DropDowGetText.click();
-                    System.out.println(value +"..... Clicking on Condition");
+                    System.out.println(value + "..... Clicking on Condition");
                     break;
                 }
 

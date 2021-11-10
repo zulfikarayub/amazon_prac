@@ -33,6 +33,22 @@ Feature: Book Appointment for haircut
       | Firstname.Lastname@fake.com | baseURI |
 
 
+  @hextexh
+  Scenario Outline: to search text in the page
+
+    Given User login the hexatech page
+    And Click en el menú superior derecho search. Un campo de búsqueda se mostrará en pantalla
+    And Tipear el texto '<TextToValidate>'. Un conjunto de resultados de búsqueda se mostrarán en pantalla.
+    Then Ver que en alguno de los resultados se encuentre el texto '<AssertText>'
+
+
+
+
+    Examples:
+      | TextToValidate | AssertText                  |
+      | Outsource      | Why outsource in Argentina? |
+
+
 
 
 
